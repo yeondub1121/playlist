@@ -35,7 +35,7 @@ const CartContainer = () => {
           <hr />
           <div className='cart-total'>
             <h4>
-              Total <span>₩{total}</span>
+              총 가격 <span>₩ {total}</span>
             </h4>
           </div>
           <button className='btn clear-btn' onClick={() => dispatch(clearCart())}>
