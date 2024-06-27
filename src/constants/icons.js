@@ -2,6 +2,33 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
+const Wrapper = styled.div`
+.cart-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #77AFFF;
+    color: #fff;
+    border-radius: 80%;
+    padding: 2px 3px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+`;
+
 export const CartIcon = () => {
   const { amount } = useSelector(state => state.cart);
 
@@ -66,31 +93,6 @@ export const ChevronUp = () => {
     );
 };
 
-const Wrapper = styled.div`
-.cart-icon {
-    position: relative;
-    width: 24px;
-    height: 24px;
 
-    svg {
-        width: 100%;
-        height: 100%;
-    }
-}
-
-.cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #77AFFF;
-    color: #fff;
-    border-radius: 80%;
-    padding: 2px 3px;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-`;
 
 export default CartIcon; 

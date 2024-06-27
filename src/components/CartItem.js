@@ -4,29 +4,6 @@ import { useDispatch } from 'react-redux';
 import { increase, decrease } from '../redux/cartSlice';
 import { ChevronUp, ChevronDown } from '../constants/icons';
 
-const CartItem = ({ id, img, title, singer, price, amount }) => {
-    const dispatch = useDispatch();
-
-    return (
-        <Wrapper>
-            <img src={img} alt={title} />
-            <div>
-                <h4>{title} | {singer}</h4>
-                <h4 className='item-price'>₩{price}</h4>
-            </div>
-            <div>
-                <button className='amount-btn' onClick={() => dispatch(increase(id))}>
-                    <ChevronUp className='icon' />
-                </button>
-                <p className='amount'>{amount}</p>
-                <button className='amount-btn' onClick={() => dispatch(decrease(id))}>
-                    <ChevronDown className='icon' />
-                </button>
-            </div>
-        </Wrapper>
-    );
-};
-
 const Wrapper = styled.article`
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -70,5 +47,30 @@ const Wrapper = styled.article`
         margin-bottom: 0;
     }
 `;
+
+const CartItem = ({ id, img, title, singer, price, amount }) => {
+    const dispatch = useDispatch();
+
+    return (
+        <Wrapper>
+            <img src={img} alt={title} />
+            <div>
+                <h4>{title} | {singer}</h4>
+                <h4 className='item-price'>₩{price}</h4>
+            </div>
+            <div>
+                <button className='amount-btn' onClick={() => dispatch(increase(id))}>
+                    <ChevronUp className='icon' />
+                </button>
+                <p className='amount'>{amount}</p>
+                <button className='amount-btn' onClick={() => dispatch(decrease(id))}>
+                    <ChevronDown className='icon' />
+                </button>
+            </div>
+        </Wrapper>
+    );
+};
+
+
 
 export default CartItem;
