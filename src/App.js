@@ -1,8 +1,10 @@
+// App.js
 import React from 'react';
 import CartContainer from './components/CartContainer';
 import { CartIcon } from './constants/icons';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import Modal from './components/Modal';
 
 const Main = styled.main`
   background-color: #f0f8ff; /* 전체 화면을 연한 하늘색 배경으로 */
@@ -47,8 +49,6 @@ const Navbar = styled.nav`
     width: 1.5rem;
     height: 1.5rem;
   }
-
-  
 `;
 
 function App() {
@@ -62,15 +62,16 @@ function App() {
           <div className='nav-container'>
             <CartIcon />
             <div className='amount-container'>
-              
+             
             </div>
           </div>
         </div>
       </Navbar>
       <CartContainer />
+      <Modal />
     </Main>
   );
 }
 
-
 export default App;
+
