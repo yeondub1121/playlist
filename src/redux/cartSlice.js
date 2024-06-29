@@ -1,49 +1,75 @@
-import { createSlice } from '@reduxjs/toolkit';
-import cartItems from '../constants/cartItems';
+// redux/cartSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
-    cartItems: cartItems,
-    amount: 0,
-    total: 0,
+  cartItems: [],
+  amount: 0,
+  total: 0,
+  isLoading: false,
 };
 
+// 서버에서 데이터를 가져오는 비동기 액션 정의
+export const fetchCartItems = createAsyncThunk(
+  'cart/fetchCartItems',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get('http://localhost:8080/musics');
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Failed to fetch cart items');
+    }
+  }
+);
+
 const cartSlice = createSlice({
-    name: 'cart',
-    initialState,
-    reducers: {
-        clearCart: (state) => {
-            state.cartItems = [];
-        },
-        removeItem: (state, action) => {
-            state.cartItems = state.cartItems.filter(item => item.id !== action.payload);
-        },
-        increase: (state, action) => {
-            const item = state.cartItems.find(item => item.id === action.payload);
-            if (item) {
-                item.amount += 1;
-            }
-        },
-        decrease: (state, action) => {
-            const item = state.cartItems.find(item => item.id === action.payload);
-            if (item) {
-                item.amount -= 1;
-                if (item.amount < 1) {
-                    state.cartItems = state.cartItems.filter(i => i.id !== action.payload);
-                }
-            }
-        },
-        calculateTotals: (state) => {
-            let amount = 0;
-            let total = 0;
-            state.cartItems.forEach(item => {
-                amount += item.amount;
-                total += item.amount * item.price;
-            });
-            state.amount = amount;
-            state.total = total;
-        },
+  name: 'cart',
+  initialState,
+  reducers: {
+    clearCart: (state) => {
+      state.cartItems = [];
+      state.amount = 0;
+      state.total = 0;
     },
+    increase: (state, { payload }) => {
+      const cartItem = state.cartItems.find((item) => item.id === payload);
+      if (cartItem) {
+        cartItem.amount += 1;
+      }
+    },
+    decrease: (state, { payload }) => {
+      const cartItem = state.cartItems.find((item) => item.id === payload);
+      if (cartItem) {
+        cartItem.amount -= 1;
+      }
+    },
+    calculateTotals: (state) => {
+      let amount = 0;
+      let total = 0;
+      state.cartItems.forEach((item) => {
+        amount += item.amount;
+        total += item.amount * item.price;
+      });
+      state.amount = amount;
+      state.total = total;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = action.payload;
+      })
+      .addCase(fetchCartItems.rejected, (state, action) => {
+        state.isLoading = false;
+        alert(action.payload);
+      });
+  },
 });
 
-export const { clearCart, removeItem, increase, decrease, calculateTotals } = cartSlice.actions;
+export const { clearCart, increase, decrease, calculateTotals } = cartSlice.actions;
 export default cartSlice.reducer;
+
