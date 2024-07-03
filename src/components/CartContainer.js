@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { calculateTotals, fetchCartItems } from '../redux/cartSlice';
+import { calculateTotals } from '../redux/cartSlice';
 import { openModal } from '../redux/modalSlice';
 import CartItem from './CartItem';
 import Loading from './Loading';
@@ -61,9 +61,7 @@ const CartContainer = () => {
   const dispatch = useDispatch();
   const { cartItems, total, amount, isLoading } = useSelector(state => state.cart);
 
-  useEffect(() => {
-    dispatch(fetchCartItems());
-  }, [dispatch]);
+ 
 
   useEffect(() => {
     dispatch(calculateTotals());
